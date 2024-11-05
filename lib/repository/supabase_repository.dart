@@ -2,6 +2,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo_app/models/task_group.dart';
 import 'package:todo_app/models/task_model.dart';
 
+
 class SupabaseRepository {
   Future<List<TaskGroup>> listTaskGroups() async {
     final supabase = Supabase.instance.client;
@@ -43,14 +44,30 @@ class SupabaseRepository {
     return response.map((task) => Task.fromMap(task)).toList();
   }
 
-  Future<void> createTask(Task task) async{
+  Future createTask(Task task) async {
     final supabase = Supabase.instance.client;
     await supabase.from('tasks').insert(task.toMap());
   }
 
-  Future<void> deleteTask(String id) async{
+  Future deleteTask(String taskId) async {
     final supabase = Supabase.instance.client;
-    await supabase.from('tasks').delete().eq('id', id);
+    await supabase.from('tasks').delete().eq('id', taskId);
+  }
+
+  Future updateTask(Task task) async {
+    final supabase = Supabase.instance.client;
+    await supabase.from('tasks').update(task.toMap()).eq('id', task.id);
+  }
+
+  Future createTaskGroup(TaskGroup taskgroup) async {
+    final supabase = Supabase.instance.client;
+    await supabase.from('task_groups').insert(taskgroup.toMap());
+  }
+
+  Future deleteTaskGroup(String taskgroupId) async {
+    final supabase = Supabase.instance.client;
+    await supabase.from('task_groups').delete().eq('id', taskgroupId);
   }
 
 }
+

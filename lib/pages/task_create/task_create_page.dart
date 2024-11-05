@@ -33,7 +33,7 @@ class _TaskCreatePageState extends State<TaskCreatePage> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(18.0),
-          child: Form( 
+          child: Form(
             key: _formKey,
             child: Column(
               children: [
@@ -148,22 +148,19 @@ class _TaskCreatePageState extends State<TaskCreatePage> {
   }
 
   Future<void> _submitForm() async {
-    bool isValid = _formKey.currentState!.validate();
-    if (isValid) {
-      final title = titleController.text;
-      final subTitle = subtitleController.text;
-
+    if (_formKey.currentState!.validate()) {
       final task = Task.create(
-        title: title,
-        subtitle: subTitle,
+        title: titleController.text,
+        subtitle: subtitleController.text,
         date: date,
         groupId: widget.groupId,
       );
 
       await context.read<TaskProvider>().createTask(task);
 
-      Navigator.pop(context);
-
+      if (mounted) {
+        Navigator.of(context).pop();
+      }
     }
   }
 }
